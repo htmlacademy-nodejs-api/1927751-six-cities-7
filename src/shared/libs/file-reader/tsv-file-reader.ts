@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 
 import { FileReader } from './file-reader.interface.js';
-import { Offer, OfferType, User } from '../../types/index.js';
+import { CityName, Location, Offer, PropertyType, User, UserType } from '../../types/index.js';
+import { SupplyType } from '../../types/supply-type.enum.js';
 
 export class TSVFileReader implements FileReader {
   private rawData = '';
@@ -28,38 +29,79 @@ export class TSVFileReader implements FileReader {
       title,
       description,
       createdDate,
-      image,
-      type,
+      city,
+      previewImage,
+      images,
+      isPremium,
+      isFavourite,
+      rating,
+      propertyType,
+      rooms,
+      guests,
       price,
-      categories,
-      firstname,
-      lastname,
+      supplies,
+      username,
       email,
-      avatarPath
+      avatarPath,
+      password,
+      userType,
+      commentsCount,
+      location
     ] = line.split('\t');
 
     return {
       title,
       description,
       postDate: new Date(createdDate),
-      image,
-      type: OfferType[type as 'Buy' | 'Sell'],
-      categories: this.parseCategories(categories),
+      city: city as CityName,
+      previewImage,
+      images: this.parseImages(images),
+      isPremium: Boolean(isPremium),
+      isFavourite: Boolean(isFavourite),
+      rating: this.parseRating(rating),
+      propertyType: propertyType as PropertyType,
+      rooms: Number(rooms),
+      guests: Number(guests),
       price: this.parsePrice(price),
-      user: this.parseUser(firstname, lastname, email, avatarPath),
+      supplies: this.parseSupplies(supplies),
+      commentsCount: Number(commentsCount),
+      location: this.parseLocation(location),
+      user: this.parseUser(username, email, avatarPath, password, userType as UserType),
     };
   }
 
-  private parseCategories(categoriesString: string): { name: string }[] {
-    return categoriesString.split(';').map((name) => ({ name }));
+  private parseImages(imagesString: string): string[] {
+    return imagesString.split(';');
+  }
+
+  private parseLocation(locationString: string): Location {
+    return locationString.split(';').reduce((acc, coord, index) => {
+      if (index === 0) {
+        return {...acc, latitude: Number(coord)};
+      }
+
+      if (index === 1) {
+        return {...acc, longitude: Number(coord)};
+      }
+
+      return acc;
+    }, { latitude: 0, longitude: 0 } as Location);
+  }
+
+  private parseSupplies(suppliesString: string): SupplyType[] {
+    return suppliesString.split(';').map((name) => name as SupplyType);
   }
 
   private parsePrice(priceString: string): number {
     return Number.parseInt(priceString, 10);
   }
 
-  private parseUser(firstname: string, lastname: string, email: string, avatarPath: string): User {
-    return { email, firstname, lastname, avatarPath };
+  private parseRating(ratingString: string): number {
+    return Number(Number.parseFloat(ratingString).toFixed(1));
+  }
+
+  private parseUser(username: string, email: string, avatarPath: string, password: string, type: UserType): User {
+    return { username, email, password, type, avatarPath };
   }
 
   public read(): void {

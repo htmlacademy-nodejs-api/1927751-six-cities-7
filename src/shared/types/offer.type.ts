@@ -7,7 +7,7 @@ import { Location } from './location.type.js';
 export type Offer = {
   title: string;
   description: string;
-  date: Date;
+  postDate: Date;
   city: CityName;
   previewImage: string;
   images: string[];
@@ -19,7 +19,7 @@ export type Offer = {
   guests: number;
   price: number;
   supplies: SupplyType[];
-  host: User;
+  user: User;
   commentsCount: number;
   location: Location;
 }
