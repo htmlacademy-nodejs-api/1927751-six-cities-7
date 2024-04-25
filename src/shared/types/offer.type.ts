@@ -1,14 +1,25 @@
-import { OfferType } from './offer-type.enum.js';
-import { Category } from './category.type.js';
+import { PropertyType } from './property-type.enum.js';
 import { User } from './user.type.js';
+import { CityName } from './city-name.enum.js';
+import { SupplyType } from './supply-type.enum.js';
+import { Location } from './location.type.js';
 
 export type Offer = {
   title: string;
   description: string;
-  postDate: Date;
-  image: string;
-  type: OfferType
+  date: Date;
+  city: CityName;
+  previewImage: string;
+  images: string[];
+  isPremium: boolean;
+  isFavourite: boolean;
+  rating: number;
+  propertyType: PropertyType;
+  rooms: number;
+  guests: number;
   price: number;
-  categories: Category[];
-  user: User;
+  supplies: SupplyType[];
+  host: User;
+  commentsCount: number;
+  location: Location;
 }
