@@ -26,3 +26,7 @@ export function generateRandomString(length: number = 10): string {
     .toString(36)
     .substring(2, length + 2);
 }
+
+export function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : '';
+}
