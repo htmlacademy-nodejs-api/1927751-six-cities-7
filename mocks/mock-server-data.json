@@ -1,0 +1,90 @@
+{
+  "api": {
+    "cities": [
+      "Paris",
+      "Cologne",
+      "Brussels",
+      "Amsterdam",
+      "Hamburg",
+      "Dusseldorf"
+    ],
+    "propertyTypes": ["Apartment", "House", "Room", "Hotel"],
+    "supplies": [
+      "Breakfast",
+      "Air conditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ],
+    "titles": [
+      "Красивый дом",
+      "Очень красивый дом",
+      "Квартира у подножия башни",
+      "Не очень хороший номер",
+      "Отличный гостиничный номер",
+      "Дом с видом на океан"
+    ],
+    "descriptions": [
+      "Красивый дом в ценетре города с видом на кофешоп.",
+      "Красивая квартира с видом на башню",
+      "Уютный номер в самой известной гостинице города",
+      "Дом на первой береговой линии, до моря буквально 5 минут на автобусе",
+      "Не очень хорошая комната в не очень хорошем доме, живите на свой страх и рист",
+      "Паньльный дом в самом центре исторического центра Парижа "
+    ],
+    "offerPreviews": [
+      "home-img-preview.jpg",
+      "home1-img-preview.jpg",
+      "home2-img-preview.jpg",
+      "room-img-preview.jpg",
+      "house-img-preview.jpg",
+      "apartment-img-preview.jpg"
+    ],
+    "offerImages": [
+      "home1-img.jpg",
+      "home2-img.jpg",
+      "flat-img.jpg",
+      "beatiful-house-img.jpg",
+      "red-house-img.jpg",
+      "blue-house-img.jpg"
+    ],
+    "userTypes": ["Pro", "Обычный"],
+    "users": [
+      "Vasia",
+      "Pierre",
+      "Ivan005",
+      "FriendlyTagNgg52",
+      "50cent",
+      "Obama12"
+    ],
+    "emails": [
+      "snow@pisem.local",
+      "president@dka.local",
+      "fish@big.local",
+      "test@pisem.local",
+      "freedom@pisem.local",
+      "rolan@pochta.local",
+      "author@mir.local",
+      "test@lost.loca",
+      "kujo-fan@story.local"
+    ],
+    "coordinates": [
+      "48.85661;2.351499",
+      "50.938361;6.959974",
+      "50.846557;4.351697",
+      "52.370216;4.895168",
+      "53.550341;10.000654",
+      "51.225402;6.776314"
+    ],
+    "avatars": [
+      "user.jpg",
+      "photo.jpg",
+      "awesome-avatar.jpg",
+      "roland.jpg",
+      "smite.jpg",
+      "coffee.jpg"
+    ]
+  }
+}
