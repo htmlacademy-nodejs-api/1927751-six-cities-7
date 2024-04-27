@@ -32,7 +32,7 @@ export class TSVOfferGenerator implements IOfferGenerator {
   constructor(private readonly mockData: MockServerData) {}
 
   public generate(): string {
-    const city = getRandomItems<string>(this.mockData.cities).join(';');
+    const city = getRandomItem<string>(this.mockData.cities);
     const title = getRandomItem<string>(this.mockData.titles);
     const description = getRandomItem<string>(this.mockData.descriptions);
     const previewImage = getRandomItem<string>(this.mockData.offerPreviews);
