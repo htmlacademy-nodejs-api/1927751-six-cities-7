@@ -1,4 +1,4 @@
-export function generateRandomValue(
+export function generateRandomNumber(
   min: number,
   max: number,
   numAfterDigit = 0
@@ -7,12 +7,22 @@ export function generateRandomValue(
 }
 
 export function getRandomItems<T>(items: T[]): T[] {
-  const startPosition = generateRandomValue(0, items.length - 1);
+  const startPosition = generateRandomNumber(0, items.length - 1);
   const endPosition =
-    startPosition + generateRandomValue(startPosition, items.length);
+    startPosition + generateRandomNumber(startPosition, items.length);
   return items.slice(startPosition, endPosition);
 }
 
 export function getRandomItem<T>(items: T[]): T {
-  return items[generateRandomValue(0, items.length - 1)];
+  return items[generateRandomNumber(0, items.length - 1)];
+}
+
+export function generateRandomBoolean(): boolean {
+  return !!Math.round(Math.random());
+}
+
+export function generateRandomString(length: number = 10): string {
+  return Math.random()
+    .toString(36)
+    .substring(2, length + 2);
 }
