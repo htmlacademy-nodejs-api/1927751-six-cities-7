@@ -1,5 +1,5 @@
-export { User } from './user.type.js';
-export { Offer } from './offer.type.js';
+export { IUser } from './user.interface.js';
+export { IOffer } from './offer.interface.js';
 export { PropertyType } from './property-type.enum.js';
 export { CityName } from './city-name.enum.js';
 export { City } from './city.type.js';

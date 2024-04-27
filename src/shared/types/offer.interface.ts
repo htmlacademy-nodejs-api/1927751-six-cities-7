@@ -1,10 +1,10 @@
 import { PropertyType } from './property-type.enum.js';
-import { User } from './user.type.js';
+import { IUser } from './user.interface.js';
 import { CityName } from './city-name.enum.js';
 import { SupplyType } from './supply-type.enum.js';
 import { Location } from './location.type.js';
 
-export type Offer = {
+export interface IOffer {
   title: string;
   description: string;
   postDate: Date;
@@ -19,7 +19,7 @@ export type Offer = {
   guests: number;
   price: number;
   supplies: SupplyType[];
-  user: User;
+  user: IUser;
   commentsCount: number;
   location: Location;
 }
