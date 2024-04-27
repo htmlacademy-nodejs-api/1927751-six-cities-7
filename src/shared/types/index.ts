@@ -5,3 +5,5 @@ export { CityName } from './city-name.enum.js';
 export { City } from './city.type.js';
 export { Location } from './location.type.js';
 export { UserType } from './user-type.enum.js';
+
+export { MockServerData } from './mock-server-data.type.js';
