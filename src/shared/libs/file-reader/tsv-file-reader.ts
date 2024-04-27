@@ -88,8 +88,8 @@ export class TSVFileReader implements IFileReader {
   private parseLocation(locationString: string): Location {
     const [latitude, longitude] = locationString.split(';');
     return {
-      latitude: Number.parseFloat(latitude),
-      longitude: Number.parseFloat(longitude),
+      latitude: Number.parseFloat(latitude ?? 0),
+      longitude: Number.parseFloat(longitude ?? 0),
     };
   }
 
