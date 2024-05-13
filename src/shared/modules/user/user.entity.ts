@@ -32,7 +32,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
   public type: UserType;
 
   @prop({ required: true, default: ' ' })
-  private _password: string;
+  private password?: string;
 
   constructor(userData: IUser) {
     super();
@@ -43,11 +43,11 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
   }
 
   public setPassword(password: string, salt: string) {
-    this._password = createSHA256(password, salt);
+    this.password = createSHA256(password, salt);
   }
 
-  public get password() {
-    return this._password;
+  public getPassword() {
+    return this.password;
   }
 }
 
