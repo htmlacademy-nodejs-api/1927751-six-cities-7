@@ -5,7 +5,6 @@ import { MockServerData } from '../../types/index.js';
 import {
   generateRandomBoolean,
   generateRandomNumber,
-  generateRandomString,
   getRandomItem,
   getRandomItems,
 } from '../../helpers/index.js';
@@ -21,9 +20,6 @@ const MAX_GUESTS = 10;
 
 const MIN_RATING = 1;
 const MAX_RATING = 5;
-
-const MIN_PASSWORD = 6;
-const MAX_PASSWORD = 12;
 
 const FIRST_WEEK_DAY = 1;
 const LAST_WEEK_DAY = 7;
@@ -58,10 +54,6 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const isPremium = generateRandomBoolean();
     const isFavourite = generateRandomBoolean();
 
-    const password = generateRandomString(
-      generateRandomNumber(MIN_PASSWORD, MAX_PASSWORD)
-    );
-
     const comments = 0;
 
     return [
@@ -82,7 +74,6 @@ export class TSVOfferGenerator implements IOfferGenerator {
       username,
       email,
       avatarPath,
-      password,
       userType,
       comments,
       location,

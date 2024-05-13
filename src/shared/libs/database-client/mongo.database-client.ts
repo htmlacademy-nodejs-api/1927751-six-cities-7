@@ -25,7 +25,7 @@ export class MongoDatabaseClient implements IDatabaseClient {
     return this.isConnected;
   }
 
-  public async connect(url: string): Promise<void> {
+  public async connect(mongoURL: string): Promise<void> {
     if (this.isConnectedToDatabase()) {
       throw new Error('MongoDB client is already connected');
     }
@@ -35,7 +35,7 @@ export class MongoDatabaseClient implements IDatabaseClient {
     let attempt = 0;
     while (attempt < RETRY_COUNT) {
       try {
-        this.mongoose = await Mongoose.connect(uri);
+        this.mongoose = await Mongoose.connect(mongoURL);
         this.isConnected = true;
         this.logger.info('Database connection established.');
         return;

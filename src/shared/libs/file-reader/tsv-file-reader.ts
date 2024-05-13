@@ -38,7 +38,6 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
       username,
       email,
       avatarPath,
-      password,
       userType,
       commentsCount,
       location,
@@ -65,7 +64,6 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
         username,
         email,
         avatarPath,
-        password,
         userType as UserType
       ),
     };
@@ -99,10 +97,9 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
     username: string,
     email: string,
     avatarPath: string,
-    password: string,
     type: UserType
   ): IUser {
-    return { username, email, password, type, avatarPath };
+    return { username, email, type, avatarPath };
   }
 
   public async read() {
