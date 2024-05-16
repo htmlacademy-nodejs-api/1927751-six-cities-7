@@ -5,28 +5,17 @@ import { MockServerData } from '../../types/index.js';
 import {
   generateRandomBoolean,
   generateRandomNumber,
-  generateRandomString,
   getRandomItem,
   getRandomItems,
 } from '../../helpers/index.js';
-
-const MIN_PRICE = 100;
-const MAX_PRICE = 100000;
-
-const MIN_ROOMS = 1;
-const MAX_ROOMS = 8;
-
-const MIN_GUESTS = 1;
-const MAX_GUESTS = 10;
-
-const MIN_RATING = 1;
-const MAX_RATING = 5;
-
-const MIN_PASSWORD = 6;
-const MAX_PASSWORD = 12;
-
-const FIRST_WEEK_DAY = 1;
-const LAST_WEEK_DAY = 7;
+import {
+  PRICE_CONSTRAINT,
+  ROOMS_CONSTRAINT,
+  GUESTS_CONSTRAINT,
+  RATING_CONSTRAINT,
+  FIRST_WEEK_DAY,
+  LAST_WEEK_DAY,
+} from './offer-generator.constant.js';
 
 export class TSVOfferGenerator implements IOfferGenerator {
   constructor(private readonly mockData: MockServerData) {}
@@ -41,10 +30,23 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const supplies = getRandomItems<string>(this.mockData.supplies).join(';');
     const location = getRandomItem<string>(this.mockData.coordinates);
 
-    const rating = generateRandomNumber(MIN_RATING, MAX_RATING, 1).toString();
-    const rooms = generateRandomNumber(MIN_ROOMS, MAX_ROOMS).toString();
-    const guests = generateRandomNumber(MIN_GUESTS, MAX_GUESTS).toString();
-    const price = generateRandomNumber(MIN_PRICE, MAX_PRICE).toString();
+    const rating = generateRandomNumber(
+      RATING_CONSTRAINT.MIN,
+      RATING_CONSTRAINT.MAX,
+      1
+    ).toString();
+    const rooms = generateRandomNumber(
+      ROOMS_CONSTRAINT.MIN,
+      ROOMS_CONSTRAINT.MAX
+    ).toString();
+    const guests = generateRandomNumber(
+      GUESTS_CONSTRAINT.MIN,
+      GUESTS_CONSTRAINT.MAX
+    ).toString();
+    const price = generateRandomNumber(
+      PRICE_CONSTRAINT.MIN,
+      PRICE_CONSTRAINT.MAX
+    ).toString();
 
     const username = getRandomItem(this.mockData.users);
     const email = getRandomItem(this.mockData.emails);
@@ -57,10 +59,6 @@ export class TSVOfferGenerator implements IOfferGenerator {
 
     const isPremium = generateRandomBoolean();
     const isFavourite = generateRandomBoolean();
-
-    const password = generateRandomString(
-      generateRandomNumber(MIN_PASSWORD, MAX_PASSWORD)
-    );
 
     const comments = 0;
 
@@ -82,7 +80,6 @@ export class TSVOfferGenerator implements IOfferGenerator {
       username,
       email,
       avatarPath,
-      password,
       userType,
       comments,
       location,
