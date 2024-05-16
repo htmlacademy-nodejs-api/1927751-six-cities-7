@@ -60,7 +60,6 @@ export class ImportCommand implements ICommand {
       previewImage: offer.previewImage,
       images: offer.images,
       isPremium: offer.isPremium,
-      isFavourite: offer.isFavourite,
       rating: offer.rating,
       propertyType: offer.propertyType,
       rooms: offer.rooms,

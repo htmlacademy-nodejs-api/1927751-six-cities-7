@@ -25,37 +25,39 @@ export interface OfferEntity extends defaultClasses.Base {}
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferEntity extends defaultClasses.TimeStamps {
-  @prop({ trim: true, required: true })
+  @prop({ required: true, trim: true })
   public title: string;
 
-  @prop({ trim: true })
-  public description!: string;
+  @prop({ required: true, trim: true })
+  public description: string;
 
-  @prop()
+  @prop({ required: true })
   public postDate: Date;
 
   @prop({
+    required: true,
     type: () => String,
     enum: CityName,
   })
   public city: CityName;
 
-  @prop()
+  @prop({ required: true })
   public previewImage: string;
 
-  @prop({ default: [] })
+  @prop({ required: true, default: [] })
   public images: string[];
 
-  @prop({ default: false })
+  @prop({ required: true, default: false })
   public isPremium: boolean;
 
-  @prop({ default: false })
+  @prop({ required: true, default: false })
   public isFavourite: boolean;
 
-  @prop({ default: 0 })
+  @prop({ required: true, default: 1 })
   public rating: number;
 
   @prop({
+    required: true,
     type: () => String,
     enum: PropertyType,
   })
@@ -67,7 +69,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true, default: 1 })
   public guests: number;
 
-  @prop({ required: true, default: 0 })
+  @prop({ required: true, default: 100 })
   public price: number;
 
   @prop({ required: true, default: [] })
