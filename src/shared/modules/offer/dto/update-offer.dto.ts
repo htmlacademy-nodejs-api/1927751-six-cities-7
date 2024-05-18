@@ -5,7 +5,7 @@ import {
   SupplyType,
 } from '../../../types/index.js';
 
-export class CreateOfferDto {
+export class UpdateOfferDto {
   public title: string;
   public description: string;
   public postDate: Date;
@@ -19,5 +19,4 @@ export class CreateOfferDto {
   public price: number;
   public supplies: SupplyType[];
   public location: Location;
-  public userId: string;
 }
