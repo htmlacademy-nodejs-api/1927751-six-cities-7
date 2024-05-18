@@ -154,6 +154,13 @@ paths:
       summary: Список предложений
       description: Возвращает список предложений
 
+      parameters:
+        - in: query
+          name: count
+          required: false
+          schema:
+            type: number
+
       responses:
         '200':
           description: Список предложений
@@ -165,6 +172,54 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/offer'
+
+        '404':
+          description: Объявления не найдены
+
+  /offers/premium:
+    get:
+      tags:
+        - offers
+      summary: Список премиальных предложений
+      description: Возвращает список премиальных предложений
+
+      responses:
+        '200':
+          description: Список премиальных предложений
+          content:
+            application/json:
+              schema:
+                properties:
+                  offers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/offer'
+
+        '404':
+          description: Объявления не найдены
+
+  /offers/favourite:
+    get:
+      tags:
+        - offers
+      summary: Список избранных предложений
+      description: Возвращает список избранных предложений
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: Список премиальных предложений
+          content:
+            application/json:
+              schema:
+                properties:
+                  offers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/offer'
+        '401':
+          description: Пользователь не авторизован
 
         '404':
           description: Объявления не найдены
@@ -192,7 +247,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offer'
+                $ref: '#/components/schemas/offerDetailed'
         '401':
           description: Пользователь не авторизован
 
@@ -229,7 +284,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offer'
+                $ref: '#/components/schemas/offerDetailed'
         '401':
           description: Пользователь не авторизован
         '403':
@@ -265,7 +320,7 @@ paths:
         '404':
           description: Предложение не найдено
 
-  /offers/{offerId}/info:
+  /offers/{offerId}:
     get:
       tags:
         - offers
@@ -285,9 +340,67 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offer'
+                $ref: '#/components/schemas/offerDetailed'
         '404':
           description: Предложение не найдено
+
+  /offers/{offerId}/favourite:
+    post:
+      tags:
+        - offers
+      summary: Добавляет или удаляет предложение в избранное
+      description: Ресурс для добавления/удаления предложения в избранное
+      security:
+        - bearerAuth: []
+
+      responses:
+        '201':
+          description: Предложение успешно добавленно/удалено в избранное
+          content:
+            application/json:
+              schema:
+                properties:
+                  isFavourite:
+                    type: boolean
+                    example: true
+                    description: показывает новое значение isFavourite
+
+        '401':
+          description: Пользователь не авторизован
+        '404':
+          description: Предложение не найдено
+
+  /comments/create:
+    post:
+      tags:
+        - comments
+      summary: Добавление комментария к предложению
+      description: Ресурс для добавления комментария к предложению
+      security:
+        - bearerAuth: []
+      
+      requestBody:
+        description: Информация для создания нового комментария
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createComment'
+        required: true
+
+      responses:
+        '201':
+          description: Комментарий успешно создан. Объект комментария
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment'
+
+        '401':
+          description: Пользователь не авторизован
+        '404':
+          description: Предложение не найдено
+        '409': 
+          description: Комментарий не создан. Ошибка валидации полей
 
 components:
   securitySchemes:
@@ -437,11 +550,11 @@ components:
               type: number
               example: 0
 
-    offer:
+    offerDetailed:
       type: object
 
       properties:
-        offerId:
+        id:
           type: string
           example: 3434weew111
 
@@ -519,3 +632,95 @@ components:
         userId:
           type: string
           example: ekjh32k4y32
+
+    offer:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 3434weew111
+
+        title:
+          type: string
+          example: Новое объявление
+
+        city:
+          type: string
+          example: Hamburg
+
+        previewImage:
+          type: string
+          example: room.jpg
+
+        isPremium:
+          type: boolean
+          example: false
+
+        propertyType:
+          type: string
+          example: Apartment
+
+        price:
+          type: number
+          example: 420
+
+        commentsCount:
+          type: number
+          example: 13
+
+        rating:
+          type: number
+          example: 1
+
+        isFavourite:
+          type: boolean
+          example: false
+
+        postDate:
+          type: string
+          example: 10.02.2024
+
+    createComment:
+      type: object
+
+      properties:
+        offerId:
+          type: string
+          example: 2132348erwer
+
+        text:
+          type: string
+          example: текст нового комментария
+
+        rating:
+          type: number
+          example: 1.5
+
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+    comment:
+      type: object
+
+      properties:
+        id: 
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        text:
+          type: string
+          example: текст нового комментария
+
+        createDate: 
+          type: string
+          example: 10.20.2023
+
+        rating:
+          type: number
+          example: 1.5
+
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
