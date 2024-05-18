@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: API сервер для проекта «Шесть Городов».
   description: |-
@@ -89,6 +89,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/user'
 
+        '401':
+          description: Пользователь не авторизован
+
         '404':
           description: Пользователь с такими данными не найден
 
@@ -104,6 +107,9 @@ paths:
       responses:
         '200':
           description: Выход пользователя успешен
+
+        '401':
+          description: Пользователь не авторизован
 
         '404':
           description: Пользователь с такими данными не найден
@@ -135,8 +141,153 @@ paths:
         '201':
           description: Аватар пользователя установлен
 
+        '401':
+          description: Пользователь не авторизован
+
         '404':
           description: Пользователь с таким id не найден
+
+  /offers:
+    get:
+      tags:
+        - offers
+      summary: Список предложений
+      description: Возвращает список предложений
+
+      responses:
+        '200':
+          description: Список предложений
+          content:
+            application/json:
+              schema:
+                properties:
+                  offers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/offer'
+
+        '404':
+          description: Объявления не найдены
+
+  /offers/create:
+    post:
+      tags:
+        - offers
+      summary: Создание предложения
+      description: Создает новое предложение
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        description: Информация для создания нового предложения
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+
+      responses:
+        '201':
+          description: Объявление создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        '401':
+          description: Пользователь не авторизован
+
+        '409':
+          description: Объявление не создано. Ошибка валидации полей.
+
+  /offers/{offerId}/update:
+    patch:
+      tags:
+        - offers
+      summary: Редактирование предложения
+      description: Редактирует существующее предложение
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        description: Информация для создания нового предложения
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+
+      responses:
+        '200':
+          description: Предложение обновлено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: У пользователя нет прав для реадактирования этого предложения
+        '404':
+          description: Предложение не найдено
+        '409':
+          description: Предложение не обновлено. Ошибка валидации полей.
+
+  /offers/{offerId}/delete:
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения
+      description: Удаляет существующее предложение
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Предложение удалено
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: У пользователя нет прав для удаления этого предложения
+        '404':
+          description: Предложение не найдено
+
+  /offers/{offerId}/info:
+    get:
+      tags:
+        - offers
+      summary: Информация по предложению
+      description: Показывает детальную информацию по существующему предложению
+
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Информация по предложению
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        '404':
+          description: Предложение не найдено
 
 components:
   securitySchemes:
@@ -222,3 +373,149 @@ components:
         avatarPath:
           type: string
           example: 'avatar.jpg'
+
+    createOffer:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: Новое объявление
+
+        description:
+          type: string
+          example: Описание объявления
+
+        postDate:
+          type: string
+          example: 10.02.2024
+
+        city:
+          type: string
+          example: Hamburg
+
+        previewImage:
+          type: string
+          example: room.jpg
+
+        images:
+          type: array
+          example: ['image1.jpg', 'image2.jpg']
+
+        isPremium:
+          type: boolean
+          example: false
+
+        propertyType:
+          type: string
+          example: Apartment
+
+        rooms:
+          type: number
+          example: 1
+
+        guests:
+          type: number
+          example: 1
+
+        price:
+          type: number
+          example: 420
+
+        supplies:
+          type: array
+          example: ['Breakfast', 'Washer']
+
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 0
+
+            longitude:
+              type: number
+              example: 0
+
+    offer:
+      type: object
+
+      properties:
+        offerId:
+          type: string
+          example: 3434weew111
+
+        title:
+          type: string
+          example: Новое объявление
+
+        description:
+          type: string
+          example: Описание объявления
+
+        city:
+          type: string
+          example: Hamburg
+
+        previewImage:
+          type: string
+          example: room.jpg
+
+        images:
+          type: array
+          example: ['image1.jpg', 'image2.jpg']
+
+        isPremium:
+          type: boolean
+          example: false
+
+        propertyType:
+          type: string
+          example: Apartment
+
+        rooms:
+          type: number
+          example: 1
+
+        guests:
+          type: number
+          example: 1
+
+        price:
+          type: number
+          example: 420
+
+        supplies:
+          type: array
+          example: ['Breakfast', 'Washer']
+
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 0
+
+            longitude:
+              type: number
+              example: 0
+
+        commentsCount:
+          type: number
+          example: 13
+
+        rating:
+          type: number
+          example: 1
+
+        isFavourite:
+          type: boolean
+          example: false
+
+        postDate:
+          type: string
+          example: 10.02.2024
+
+        userId:
+          type: string
+          example: ekjh32k4y32
