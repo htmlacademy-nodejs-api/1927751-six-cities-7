@@ -6,6 +6,7 @@ import { UserEntity } from './user.entity.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { Component } from '../../types/component.enum.js';
 import { ILogger } from '../../libs/logger/index.js';
+import { UpdateUserDto } from './dto/update-user.dto.js';
 
 @injectable()
 export class DefaultUserService implements IUserService {
@@ -45,5 +46,9 @@ export class DefaultUserService implements IUserService {
     }
 
     return this.create(dto, salt);
+  }
+
+  public async updateById(userId: string, dto: UpdateUserDto) {
+    return this.userModel.findByIdAndUpdate(userId, dto, { new: true }).exec();
   }
 }
