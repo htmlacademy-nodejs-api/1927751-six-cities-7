@@ -24,6 +24,9 @@ export class DefaultCommentService implements ICommentService {
     }
 
     const comment = await this.commentModel.create(dto);
+
+    this.offerService.updateRating(dto.offerId);
+
     return comment.populate('userId');
   }
 

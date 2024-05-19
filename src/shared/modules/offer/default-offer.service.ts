@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { inject, injectable } from 'inversify';
 import { DocumentType, types } from '@typegoose/typegoose';
 
@@ -7,7 +8,10 @@ import { ILogger } from '../../libs/logger/index.js';
 import { OfferEntity } from './offer.entity.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
-import { DEFAULT_OFFER_COUNT, MAX_PREMIUM_OFFER_COUNT } from './offer.constant.js';
+import {
+  DEFAULT_OFFER_COUNT,
+  MAX_PREMIUM_OFFER_COUNT,
+} from './offer.constant.js';
 
 @injectable()
 export class DefaultOfferService implements IOfferService {
@@ -81,6 +85,73 @@ export class DefaultOfferService implements IOfferService {
           commentCount: 1,
         },
       })
+      .exec();
+  }
+
+  public async getRating(offerId: string): Promise<number> {
+    const id = new mongoose.Types.ObjectId(offerId);
+
+    const result = await this.offerModel
+      .aggregate([
+        {
+          $match: { _id: id },
+        },
+        {
+          $lookup: {
+            from: 'comments',
+            let: { offerId: '$_id' },
+            pipeline: [
+              { $match: { offerId: id } },
+              { $project: { _id: null, rating: 1 } },
+            ],
+            as: 'comments',
+          },
+        },
+        {
+          $addFields: {
+            commentsLength: { $size: '$comments' },
+            commentsSum: {
+              $reduce: {
+                input: '$comments',
+                initialValue: 0,
+                in: { $sum: ['$$value', '$$this.rating'] },
+              },
+            },
+          },
+        },
+        {
+          $addFields: {
+            rating: {
+              $round: [{ $divide: ['$commentsSum', '$commentsLength'] }, 1],
+            },
+          },
+        },
+        { $unset: ['commentsLength', 'commentsSum', 'comments'] },
+      ])
+      .exec();
+
+    return result?.[0]?.rating ?? null;
+  }
+
+  public async updateRating(
+    offerId: string
+  ): Promise<DocumentType<OfferEntity> | null> {
+    const rating = await this.getRating(offerId);
+
+    if (!rating) {
+      return null;
+    }
+
+    return this.offerModel
+      .findByIdAndUpdate(
+        offerId,
+        {
+          $set: {
+            rating: rating,
+          },
+        },
+        { new: true }
+      )
       .exec();
   }
 }
