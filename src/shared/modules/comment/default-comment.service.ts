@@ -20,14 +20,17 @@ export class DefaultCommentService implements ICommentService {
   public async create(
     dto: CreateCommentDto
   ): Promise<DocumentType<CommentEntity> | null> {
-    const offer = await this.offerService.incCommentCount(dto.offerId);
-    if (!offer) {
+    const isOfferExist = await this.offerService.exists(dto.offerId);
+
+    if (!isOfferExist) {
       return null;
     }
 
     const comment = await this.commentModel.create(dto);
 
-    this.offerService.updateRating(dto.offerId);
+    await this.offerService.incCommentCount(dto.offerId);
+
+    await this.offerService.updateRating(dto.offerId);
 
     return comment.populate('userId');
   }
