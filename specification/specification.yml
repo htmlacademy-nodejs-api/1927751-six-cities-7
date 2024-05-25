@@ -147,6 +147,30 @@ paths:
         '404':
           description: Пользователь с таким id не найден
 
+  /users/favourites:
+    get:
+      tags:
+        - users
+      summary: Список избранных предложений
+      description: Возвращает список избранных предложений
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: Список премиальных предложений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offer'
+        '401':
+          description: Пользователь не авторизован
+
+        '404':
+          description: Объявления не найдены
+
   /offers:
     get:
       tags:
@@ -190,30 +214,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/offer'
-
-        '404':
-          description: Объявления не найдены
-
-  /offers/favourite:
-    get:
-      tags:
-        - offers
-      summary: Список избранных предложений
-      description: Возвращает список избранных предложений
-      security:
-        - bearerAuth: []
-
-      responses:
-        '200':
-          description: Список премиальных предложений
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/offer'
-        '401':
-          description: Пользователь не авторизован
 
         '404':
           description: Объявления не найдены
