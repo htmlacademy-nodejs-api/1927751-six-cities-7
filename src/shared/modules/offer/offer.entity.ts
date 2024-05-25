@@ -76,7 +76,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public supplies: SupplyType[];
 
   @prop({ default: 0 })
-  public commentsCount: number;
+  public commentCount: number;
 
   @prop({ required: true, default: { latitude: 0, longitude: 0 } })
   public location: Location;

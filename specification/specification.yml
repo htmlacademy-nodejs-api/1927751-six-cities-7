@@ -147,6 +147,30 @@ paths:
         '404':
           description: Пользователь с таким id не найден
 
+  /users/favourites:
+    get:
+      tags:
+        - users
+      summary: Список избранных предложений
+      description: Возвращает список избранных предложений
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: Список премиальных предложений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offer'
+        '401':
+          description: Пользователь не авторизован
+
+        '404':
+          description: Объявления не найдены
+
   /offers:
     get:
       tags:
@@ -167,11 +191,9 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  offers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/offer'
+                type: array
+                items:
+                  $ref: '#/components/schemas/offer'
 
         '404':
           description: Объявления не найдены
@@ -189,37 +211,9 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  offers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/offer'
-
-        '404':
-          description: Объявления не найдены
-
-  /offers/favourite:
-    get:
-      tags:
-        - offers
-      summary: Список избранных предложений
-      description: Возвращает список избранных предложений
-      security:
-        - bearerAuth: []
-
-      responses:
-        '200':
-          description: Список премиальных предложений
-          content:
-            application/json:
-              schema:
-                properties:
-                  offers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/offer'
-        '401':
-          description: Пользователь не авторизован
+                type: array
+                items:
+                  $ref: '#/components/schemas/offer'
 
         '404':
           description: Объявления не найдены
@@ -378,7 +372,7 @@ paths:
       description: Ресурс для добавления комментария к предложению
       security:
         - bearerAuth: []
-      
+
       requestBody:
         description: Информация для создания нового комментария
         content:
@@ -399,8 +393,35 @@ paths:
           description: Пользователь не авторизован
         '404':
           description: Предложение не найдено
-        '409': 
+        '409':
           description: Комментарий не создан. Ошибка валидации полей
+
+  /comments/{offerId}:
+    get:
+      tags:
+        - comments
+      summary: Показать комментарии определенного предложения
+      description: Ресурс для получения списка комментариев к предложению
+
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Список комментариев
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
+
+        '404':
+          description: Предложение не найдено
 
 components:
   securitySchemes:
@@ -697,15 +718,11 @@ components:
           type: number
           example: 1.5
 
-        userId:
-          type: string
-          example: 6329c3d6a04ab1061c6425ea
-
     comment:
       type: object
 
       properties:
-        id: 
+        id:
           type: string
           example: 6329c3d6a04ab1061c6425ea
 
@@ -713,7 +730,7 @@ components:
           type: string
           example: текст нового комментария
 
-        createDate: 
+        createDate:
           type: string
           example: 10.20.2023
 
@@ -722,5 +739,9 @@ components:
           example: 1.5
 
         userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        offerId:
           type: string
           example: 6329c3d6a04ab1061c6425ea

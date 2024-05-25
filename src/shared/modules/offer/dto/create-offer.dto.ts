@@ -13,7 +13,6 @@ export class CreateOfferDto {
   public previewImage: string;
   public images: string[];
   public isPremium: boolean;
-  public rating: number;
   public propertyType: PropertyType;
   public rooms: number;
   public guests: number;
