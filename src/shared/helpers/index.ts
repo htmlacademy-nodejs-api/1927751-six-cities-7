@@ -5,6 +5,7 @@ export {
   getRandomItems,
   getRandomItem,
   getErrorMessage,
+  fillDTO,
 } from './common.js';
 
 export { getCurrentModuleDirectoryPath } from './file-system.js';
