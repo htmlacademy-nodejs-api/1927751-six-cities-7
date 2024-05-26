@@ -4,3 +4,26 @@ GET http://localhost:5500/offers HTTP/1.1
 Content-Type: application/json
 
 ###
+
+## Добавить новую категорию
+POST http://localhost:5500/offers/create HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Новое предложение!!!",
+  "description": "Самый новый офеер и тдто",
+  "postDate": "2024-05-19T11:13:40.453Z",
+  "city": "Paris",
+  "previewImage": "AVATAR.jpg",
+  "images": ["img.1.png"],
+  "isPremius": false,
+  "propertyType": "Apartment",
+  "rooms": 3,
+  "guests": 2,
+  "price": 200,
+  "supplies": ["Washer", "Towels"],
+  "location": { "latitude": 11,  "longitude": 22 },
+  "userId": "6649dee48068962011aea3be"
+}
+
+###
