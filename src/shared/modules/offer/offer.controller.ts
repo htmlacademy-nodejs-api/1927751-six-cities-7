@@ -4,10 +4,15 @@ import { inject, injectable } from 'inversify';
 import { BaseController, HttpMethod } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
+import { IOfferService } from './offer-service.interface.js';
 
 @injectable()
 export class OfferController extends BaseController {
-  constructor(@inject(Component.Logger) protected readonly logger: ILogger) {
+  constructor(
+    @inject(Component.Logger) protected readonly logger: ILogger,
+    @inject(Component.OfferService)
+    protected readonly offerService: IOfferService
+  ) {
     super(logger);
 
     this.logger.info('Register routes for OfferController…');
@@ -20,7 +25,11 @@ export class OfferController extends BaseController {
     });
   }
 
-  public index(req: Request, res: Response) {}
+  public async index(_req: Request, res: Response) {
+    const offers = await this.offerService.find();
 
-  public create(req: Request, res: Response) {}
+    this.ok(res, offers);
+  }
+
+  public create(_req: Request, _res: Response) {}
 }
