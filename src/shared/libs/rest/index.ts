@@ -6,3 +6,4 @@ export { IExceptionFilter } from './exception-filter/exception-filter.interface.
 export { AppExceptionFilter } from './exception-filter/app-exception-filter.js';
 export { RequestParams } from './types/request.params.type.js';
 export { RequestBody } from './types/request-body.type.js';
+export { HttpError } from './errors/http-error.js';
