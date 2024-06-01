@@ -4,7 +4,6 @@ import { ICommentService } from './comment-service.interface.js';
 import { Component } from '../../types/component.enum.js';
 import { CommentEntity } from './comment.entity.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
-import { IOfferService } from '../offer/index.js';
 import { DEFAULT_COMMENT_COUNT } from './comment.constant.js';
 import { SortType } from '../../types/index.js';
 
@@ -12,26 +11,13 @@ import { SortType } from '../../types/index.js';
 export class DefaultCommentService implements ICommentService {
   constructor(
     @inject(Component.CommentModel)
-    private readonly commentModel: types.ModelType<CommentEntity>,
-    @inject(Component.OfferService)
-    private readonly offerService: IOfferService
+    private readonly commentModel: types.ModelType<CommentEntity>
   ) {}
 
   public async create(
     dto: CreateCommentDto
-  ): Promise<DocumentType<CommentEntity> | null> {
-    const isOfferExist = await this.offerService.exists(dto.offerId);
-
-    if (!isOfferExist) {
-      return null;
-    }
-
+  ): Promise<DocumentType<CommentEntity>> {
     const comment = await this.commentModel.create(dto);
-
-    await this.offerService.incCommentCount(dto.offerId);
-
-    await this.offerService.updateRating(dto.offerId);
-
     return comment.populate('userId');
   }
 

@@ -16,13 +16,17 @@ import { StatusCodes } from 'http-status-codes';
 import { ParamOfferId } from './type/param-offerid.type.js';
 import { CreateOfferRequest } from './type/create-offer-request.type.js';
 import { RequestQuery } from '../../libs/rest/types/request-query.type.js';
+import { ICommentService } from '../comment/comment-service.interface.js';
+import { CommentRdo } from '../comment/rdo/comment.rdo.js';
 
 @injectable()
 export class OfferController extends BaseController {
   constructor(
     @inject(Component.Logger) protected readonly logger: ILogger,
     @inject(Component.OfferService)
-    protected readonly offerService: IOfferService
+    protected readonly offerService: IOfferService,
+    @inject(Component.CommentService)
+    protected readonly commentService: ICommentService
   ) {
     super(logger);
 
@@ -31,15 +35,15 @@ export class OfferController extends BaseController {
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
 
     this.addRoute({
-      path: '/premium',
-      method: HttpMethod.Get,
-      handler: this.premium,
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
     });
 
     this.addRoute({
-      path: '/create',
-      method: HttpMethod.Post,
-      handler: this.create,
+      path: '/premium',
+      method: HttpMethod.Get,
+      handler: this.premium,
     });
 
     this.addRoute({
@@ -58,6 +62,11 @@ export class OfferController extends BaseController {
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
+    });
+    this.addRoute({
+      path: '/:offerId/comments',
+      method: HttpMethod.Get,
+      handler: this.getComments,
     });
 
     //TODO: favoutrite route
@@ -141,6 +150,24 @@ export class OfferController extends BaseController {
       );
     }
 
+    await this.commentService.deleteByOfferId(offerId);
+
     this.noContent(res, fillDTO(OfferRdo, offer));
+  }
+
+  public async getComments(
+    { params }: Request<ParamOfferId>,
+    res: Response
+  ): Promise<void> {
+    if (!(await this.offerService.exists(params.offerId))) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Offer with id ${params.offerId} not found.`,
+        'OfferController'
+      );
+    }
+
+    const comments = await this.commentService.findByOfferId(params.offerId);
+    this.ok(res, fillDTO(CommentRdo, comments));
   }
 }
