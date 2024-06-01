@@ -18,6 +18,7 @@ import { CreateOfferRequest } from './type/create-offer-request.type.js';
 import { RequestQuery } from '../../libs/rest/types/request-query.type.js';
 import { ICommentService } from '../comment/comment-service.interface.js';
 import { CommentRdo } from '../comment/rdo/comment.rdo.js';
+import { ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -50,23 +51,27 @@ export class OfferController extends BaseController {
       path: '/:offerId',
       method: HttpMethod.Get,
       handler: this.show,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
     });
 
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Patch,
       handler: this.update,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
     });
 
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
     });
     this.addRoute({
       path: '/:offerId/comments',
       method: HttpMethod.Get,
       handler: this.getComments,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
     });
 
     //TODO: favoutrite route

@@ -8,3 +8,5 @@ export { RequestParams } from './types/request.params.type.js';
 export { RequestBody } from './types/request-body.type.js';
 export { RequestQuery } from './types/request-query.type.js';
 export { HttpError } from './errors/http-error.js';
+export { IMiddleware } from './middleware/middleware.interface.js';
+export { ValidateObjectIdMiddleware } from './middleware/validate-objectid.middleware.js';
