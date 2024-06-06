@@ -6,7 +6,7 @@ Content-Type: application/json
 ###
 
 ## Получить список премиальных предложений
-GET http://localhost:5500/offers/premium HTTP/1.1
+GET http://localhost:5500/offers/premium?limit=1 HTTP/1.1
 Content-Type: application/json
 
 ###
@@ -18,17 +18,17 @@ Content-Type: application/json
 ###
 
 ## Добавить новый оффер
-POST http://localhost:5500/offers/create HTTP/1.1
+POST http://localhost:5500/offers HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Новое предложение!!!",
+  "title": "11122Новое предложение!!!",
   "description": "Самый новый офеер и тдто",
   "postDate": "2024-05-19T11:13:40.453Z",
   "city": "Paris",
-  "previewImage": "AVATAR.jpg",
-  "images": ["img.1.png"],
-  "isPremius": false,
+  "previewImage": "sdfsdfsdfsdkjfhkjdsfhkjdsfhkdjsfhkjhfdkjsdhAVATAR.jpg",
+  "images": ["dfklhsdkjfhsdkjlfhjksdhfklsdjflkdsjflkjdslkfjsdlkfjlksdjflimg.1.png"],
+  "isPremium": false,
   "propertyType": "Apartment",
   "rooms": 3,
   "guests": 2,
@@ -41,18 +41,24 @@ Content-Type: application/json
 ###
 
 ## Обновить оффер
-PATCH http://localhost:5500/offers/6654ff992cb03e8f367cf8d5/update HTTP/1.1
+PATCH http://localhost:5500/offers/6657873c45613839fbd30796 HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Новое предложение!!!222",
+  "title": "Обновили предложение!!!",
   "description": "Обновили старый оффер"
 }
 
 ###
 
 ## Удалить оффер
-DELETE http://localhost:5500/offers/6654ff992cb03e8f367cf8d5/delete HTTP/1.1
+DELETE http://localhost:5500/offers/6657834b2efff4f283e01c5b HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Список комментариев к предложению
+GET http://localhost:5500/offers/6657873c45613839fbd30796/comments HTTP/1.1
 Content-Type: application/json
 
 ###

@@ -198,27 +198,6 @@ paths:
         '404':
           description: Объявления не найдены
 
-  /offers/premium:
-    get:
-      tags:
-        - offers
-      summary: Список премиальных предложений
-      description: Возвращает список премиальных предложений
-
-      responses:
-        '200':
-          description: Список премиальных предложений
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/offer'
-
-        '404':
-          description: Объявления не найдены
-
-  /offers/create:
     post:
       tags:
         - offers
@@ -247,6 +226,26 @@ paths:
 
         '409':
           description: Объявление не создано. Ошибка валидации полей.
+
+  /offers/premium:
+    get:
+      tags:
+        - offers
+      summary: Список премиальных предложений
+      description: Возвращает список премиальных предложений
+
+      responses:
+        '200':
+          description: Список премиальных предложений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offer'
+
+        '404':
+          description: Объявления не найдены
 
   /offers/{offerId}/update:
     patch:
@@ -364,7 +363,34 @@ paths:
         '404':
           description: Предложение не найдено
 
-  /comments/create:
+  /offers/{offerId}/comments:
+    get:
+      tags:
+        - offers
+      summary: Показать комментарии определенного предложения
+      description: Ресурс для получения списка комментариев к предложению
+
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Список комментариев
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
+
+        '404':
+          description: Предложение не найдено
+
+  /comments:
     post:
       tags:
         - comments
@@ -395,33 +421,6 @@ paths:
           description: Предложение не найдено
         '409':
           description: Комментарий не создан. Ошибка валидации полей
-
-  /comments/{offerId}:
-    get:
-      tags:
-        - comments
-      summary: Показать комментарии определенного предложения
-      description: Ресурс для получения списка комментариев к предложению
-
-      parameters:
-        - in: path
-          name: offerId
-          required: true
-          schema:
-            type: string
-
-      responses:
-        '200':
-          description: Список комментариев
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/comment'
-
-        '404':
-          description: Предложение не найдено
 
 components:
   securitySchemes:
