@@ -18,7 +18,7 @@ Content-Type: application/json
 ###
 
 ## Добавить новый оффер
-POST http://localhost:5500/offers/create HTTP/1.1
+POST http://localhost:5500/offers HTTP/1.1
 Content-Type: application/json
 
 {
@@ -26,9 +26,9 @@ Content-Type: application/json
   "description": "Самый новый офеер и тдто",
   "postDate": "2024-05-19T11:13:40.453Z",
   "city": "Paris",
-  "previewImage": "AVATAR.jpg",
-  "images": ["img.1.png"],
-  "isPremius": false,
+  "previewImage": "sdfsdfsdfsdkjfhkjdsfhkjdsfhkdjsfhkjhfdkjsdhAVATAR.jpg",
+  "images": ["dfklhsdkjfhsdkjlfhjksdhfklsdjflkdsjflkjdslkfjsdlkfjlksdjflimg.1.png"],
+  "isPremium": false,
   "propertyType": "Apartment",
   "rooms": 3,
   "guests": 2,

@@ -8,7 +8,8 @@ import {
   IsInt,
   IsMongoId,
   IsObject,
-  IsNumber,
+  Min,
+  Max,
 } from 'class-validator';
 
 import {
@@ -41,13 +42,14 @@ export class CreateOfferDto {
   @IsEnum(CityName, { message: CreateOfferValidationMessage.city.invalid })
   public city: CityName;
 
-  @MinLength(256, {
+  //TODO: make it longer
+  @MinLength(10, {
     message: CreateOfferValidationMessage.previewImage.minLength,
   })
   public previewImage: string;
 
   @IsArray({ message: CreateOfferValidationMessage.images.invalidFormat })
-  @MinLength(256, {
+  @MinLength(10, {
     each: true,
     message: CreateOfferValidationMessage.images.minLength,
   })
@@ -62,18 +64,18 @@ export class CreateOfferDto {
   public propertyType: PropertyType;
 
   @IsInt({ message: CreateOfferValidationMessage.rooms.invalidFormat })
-  @MinLength(1, { message: CreateOfferValidationMessage.rooms.minValue })
-  @MaxLength(8, { message: CreateOfferValidationMessage.rooms.maxValue })
+  @Min(1, { message: CreateOfferValidationMessage.rooms.minValue })
+  @Max(8, { message: CreateOfferValidationMessage.rooms.maxValue })
   public rooms: number;
 
   @IsInt({ message: CreateOfferValidationMessage.guests.invalidFormat })
-  @MinLength(1, { message: CreateOfferValidationMessage.guests.minValue })
-  @MaxLength(10, { message: CreateOfferValidationMessage.guests.maxValue })
+  @Min(1, { message: CreateOfferValidationMessage.guests.minValue })
+  @Max(10, { message: CreateOfferValidationMessage.guests.maxValue })
   public guests: number;
 
   @IsInt({ message: CreateOfferValidationMessage.price.invalidFormat })
-  @MinLength(100, { message: CreateOfferValidationMessage.price.minValue })
-  @MaxLength(100000, { message: CreateOfferValidationMessage.price.maxValue })
+  @Min(100, { message: CreateOfferValidationMessage.price.minValue })
+  @Max(100000, { message: CreateOfferValidationMessage.price.maxValue })
   public price: number;
 
   @IsArray({ message: CreateOfferValidationMessage.supplies.invalidFormat })
@@ -85,10 +87,6 @@ export class CreateOfferDto {
 
   //TODO: how validate coordinates???
   @IsObject({ message: CreateOfferValidationMessage.location.invalidFormat })
-  @IsNumber(
-    {},
-    { each: true, message: CreateOfferValidationMessage.location.invalidType }
-  )
   public location: Location;
 
   @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
