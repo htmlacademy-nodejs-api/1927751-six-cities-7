@@ -23,7 +23,9 @@ export class RestApplication {
     @inject(Component.UserController)
     private readonly userController: IController,
     @inject(Component.CommentController)
-    private readonly commentController: IController
+    private readonly commentController: IController,
+    @inject(Component.AuthExceptionFilter)
+    private readonly authExceptionFilter: IExceptionFilter
   ) {
     this.server = express();
   }
@@ -60,6 +62,9 @@ export class RestApplication {
   }
 
   private async _initExceptionFilters() {
+    this.server.use(
+      this.authExceptionFilter.catch.bind(this.authExceptionFilter)
+    );
     this.server.use(
       this.appExceptionFilter.catch.bind(this.appExceptionFilter)
     );
