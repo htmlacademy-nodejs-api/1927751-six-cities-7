@@ -51,4 +51,10 @@ export class DefaultUserService implements IUserService {
   public async updateById(userId: string, dto: UpdateUserDto) {
     return this.userModel.findByIdAndUpdate(userId, dto, { new: true }).exec();
   }
+
+  public async updateFavourites(userId: string, favourites: string[]) {
+    return this.userModel
+      .findByIdAndUpdate(userId, { favourites }, { new: true })
+      .exec();
+  }
 }

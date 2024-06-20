@@ -56,6 +56,12 @@ export class DefaultOfferService implements IOfferService {
       .exec();
   }
 
+  public async findFavourite(
+    offerIds: string[]
+  ): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel.find({ _id: { $in: offerIds } }).exec();
+  }
+
   public async deleteById(
     offerId: string
   ): Promise<DocumentType<OfferEntity> | null> {

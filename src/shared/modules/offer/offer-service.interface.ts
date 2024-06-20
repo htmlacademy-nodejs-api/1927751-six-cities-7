@@ -10,6 +10,7 @@ export interface IOfferService extends IDocumentExists {
   findById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   find(count?: number): Promise<DocumentType<OfferEntity>[]>;
   findPremium(): Promise<DocumentType<OfferEntity>[]>;
+  findFavourite(offerIds: string[]): Promise<DocumentType<OfferEntity>[]>;
   deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   updateById(
     offerId: string,

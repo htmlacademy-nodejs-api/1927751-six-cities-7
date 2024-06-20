@@ -15,4 +15,8 @@ export interface IUserService {
     userId: string,
     dto: UpdateUserDto
   ): Promise<DocumentType<UserEntity> | null>;
+  updateFavourites(
+    userId: string,
+    favourites: string[]
+  ): Promise<DocumentType<UserEntity> | null>;
 }
