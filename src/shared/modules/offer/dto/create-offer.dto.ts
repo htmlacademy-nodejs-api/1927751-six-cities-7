@@ -6,7 +6,6 @@ import {
   IsArray,
   IsBoolean,
   IsInt,
-  IsMongoId,
   IsObject,
   Min,
   Max,
