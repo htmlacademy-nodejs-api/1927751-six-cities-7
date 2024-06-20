@@ -59,6 +59,9 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
     const hashPassword = createSHA256(password, salt);
     return hashPassword === this.password;
   }
+
+  @prop({ required: true, default: [] })
+  public favourites: string[];
 }
 
 export const UserModel = getModelForClass(UserEntity);

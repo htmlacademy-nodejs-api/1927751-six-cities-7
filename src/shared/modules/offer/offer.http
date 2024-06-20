@@ -6,7 +6,7 @@ Content-Type: application/json
 ###
 
 ## Получить список премиальных предложений
-GET http://localhost:5500/offers/premium?limit=1 HTTP/1.1
+GET http://localhost:5500/offers/premium HTTP/1.1
 Content-Type: application/json
 
 ###
@@ -60,5 +60,19 @@ Content-Type: application/json
 ## Список комментариев к предложению
 GET http://localhost:5500/offers/6657873c45613839fbd30795/comments HTTP/1.1
 Content-Type: application/json
+
+###
+
+## Список избранных предложений
+GET http://localhost:5500/offers/favourites HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJ1c2VybmFtZSI6IkphY2siLCJpZCI6IjY2NTRmMzI2NDYxZDVhNWM5YWEwZDEwNiIsImlhdCI6MTcxODkxNDA2NywiZXhwIjoxNzE5MDg2ODY3fQ.XEQRgxPY-uDGIwTMShqFDWoNaC45JjsKJlzR2dlF0nk
+
+###
+
+## Добавить\удалить в избранное
+POST http://localhost:5500/offers/66539fd9ee2a683f88687683/favourite HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJ1c2VybmFtZSI6IkphY2siLCJpZCI6IjY2NTRmMzI2NDYxZDVhNWM5YWEwZDEwNiIsImlhdCI6MTcxODkxNDA2NywiZXhwIjoxNzE5MDg2ODY3fQ.XEQRgxPY-uDGIwTMShqFDWoNaC45JjsKJlzR2dlF0nk
 
 ###

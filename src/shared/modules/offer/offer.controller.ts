@@ -7,6 +7,7 @@ import {
   HttpMethod,
   ValidateDtoMiddleware,
   PrivateRouteMiddleware,
+  HttpError,
 } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
@@ -21,6 +22,8 @@ import { ICommentService } from '../comment/comment-service.interface.js';
 import { CommentRdo } from '../comment/rdo/comment.rdo.js';
 import { ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
+import { IUserService } from '../user/user-service.interface.js';
+import { StatusCodes } from 'http-status-codes';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -29,7 +32,8 @@ export class OfferController extends BaseController {
     @inject(Component.OfferService)
     protected readonly offerService: IOfferService,
     @inject(Component.CommentService)
-    protected readonly commentService: ICommentService
+    protected readonly commentService: ICommentService,
+    @inject(Component.UserService) private readonly userService: IUserService
   ) {
     super(logger);
 
@@ -51,6 +55,13 @@ export class OfferController extends BaseController {
       path: '/premium',
       method: HttpMethod.Get,
       handler: this.premium,
+    });
+
+    this.addRoute({
+      path: '/favourites',
+      method: HttpMethod.Get,
+      handler: this.favourites,
+      middlewares: [new PrivateRouteMiddleware()],
     });
 
     this.addRoute({
@@ -92,6 +103,17 @@ export class OfferController extends BaseController {
       middlewares: [
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+
+    this.addRoute({
+      path: '/:offerId/favourite',
+      method: HttpMethod.Post,
+      handler: this.updateFavorites,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
     });
 
@@ -169,5 +191,58 @@ export class OfferController extends BaseController {
   ): Promise<void> {
     const comments = await this.commentService.findByOfferId(params.offerId);
     this.ok(res, fillDTO(CommentRdo, comments));
+  }
+
+  private async updateFavorites(
+    { params, tokenPayload }: Request<ParamOfferId>,
+    res: Response
+  ): Promise<void> {
+    const { offerId } = params;
+
+    const user = await this.userService.findByEmail(tokenPayload.email);
+
+    if (!user) {
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED,
+        'Unauthorized',
+        'UserController'
+      );
+    }
+
+    let favorites = user.favourites ?? [];
+    let isFavourite = false;
+
+    if (favorites.includes(offerId)) {
+      favorites = favorites.filter((id) => id !== offerId);
+    } else {
+      favorites = [...favorites, offerId];
+      isFavourite = true;
+    }
+
+    await this.userService.updateFavourites(tokenPayload.id, favorites);
+
+    this.ok(res, { isFavourite });
+  }
+
+  public async favourites(
+    { tokenPayload }: Request,
+    res: Response
+  ): Promise<void> {
+    const user = await this.userService.findByEmail(tokenPayload.email);
+
+    if (!user) {
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED,
+        'Unauthorized',
+        'UserController'
+      );
+    }
+
+    const favouriteOfferIds = user.favourites ?? [];
+
+    const offers = await this.offerService.findFavourite(favouriteOfferIds);
+
+    const responseData = fillDTO(OfferRdo, offers);
+    this.ok(res, responseData);
   }
 }
