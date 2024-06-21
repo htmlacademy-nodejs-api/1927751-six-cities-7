@@ -8,6 +8,7 @@ import { IDatabaseClient } from '../shared/libs/database-client/index.js';
 import { getMongoURL } from '../shared/helpers/index.js';
 import { IController, IExceptionFilter } from '../shared/libs/rest/index.js';
 import { ParseTokenMiddleware } from '../shared/libs/rest/middleware/parse-token.middleware.js';
+import cors from 'cors';
 
 @injectable()
 export class RestApplication {
@@ -68,6 +69,7 @@ export class RestApplication {
     this.server.use(
       authenticateMiddleware.execute.bind(authenticateMiddleware)
     );
+    this.server.use(cors());
   }
 
   private async _initExceptionFilters() {
