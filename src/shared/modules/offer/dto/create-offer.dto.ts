@@ -41,7 +41,6 @@ export class CreateOfferDto {
   @IsEnum(CityName, { message: CreateOfferValidationMessage.city.invalid })
   public city: CityName;
 
-  //TODO: make it longer
   @MinLength(10, {
     message: CreateOfferValidationMessage.previewImage.minLength,
   })
@@ -84,7 +83,6 @@ export class CreateOfferDto {
   })
   public supplies: SupplyType[];
 
-  //TODO: how validate coordinates???
   @IsObject({ message: CreateOfferValidationMessage.location.invalidFormat })
   public location: Location;
 
