@@ -46,7 +46,6 @@ export class UpdateOfferDto {
   public city?: CityName;
 
   @IsOptional()
-  //TODO: make it longer
   @MinLength(10, {
     message: CreateOfferValidationMessage.previewImage.minLength,
   })
@@ -97,7 +96,6 @@ export class UpdateOfferDto {
   public supplies?: SupplyType[];
 
   @IsOptional()
-  //TODO: how validate coordinates???
   @IsObject({ message: CreateOfferValidationMessage.location.invalidFormat })
   public location?: Location;
 }

@@ -116,13 +116,6 @@ export class OfferController extends BaseController {
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
     });
-
-    //TODO: favoutrite route
-    // this.addRoute({
-    //   path: '/:id/favourite',
-    //   method: HttpMethod.Delete,
-    //   handler: this.delete,
-    // });
   }
 
   public async index(
@@ -221,7 +214,7 @@ export class OfferController extends BaseController {
 
     await this.userService.updateFavourites(tokenPayload.id, favorites);
 
-    this.ok(res, { isFavourite });
+    this.created(res, { isFavourite });
   }
 
   public async favourites(
